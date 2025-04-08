@@ -1,0 +1,1 @@
+# Asset-counting-and-verifictaion-using-YOLO-on-the-VPU-of-the-OAK-D-Pro-camera
