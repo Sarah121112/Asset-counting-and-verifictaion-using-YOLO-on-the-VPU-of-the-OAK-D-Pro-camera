@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bottle Detection Dashboard</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 32px;
+      color: #007bff;
+    }
+
+    .card span {
+      display: block;
+      margin-top: 5px;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 16px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: green;
+      transition: width 0.3s ease;
+    }
+
+    img.reference {
+      margin-top: 20px;
+      max-height: 250px;
+      border-radius: 8px;
+    }
+  </style>
+<body>
+</head>
+  <div class="container">
+    <h1>Bottle Detection Dashboard </h1>
+    <img src="/static/reference.jpg" class="reference" alt="Reference Object">
+
+    <div class="stats">
+      <div class="card">
+        <h2 id="count">0</h2>
+        <span>Total Bottles Detected</span>
+      </div>
+
+      <div class="card">
+        <h2 id="confidence-text">93%</h2>
+        <span>Confidence</span>
+        <div class="progress-bar">
+          <div class="progress-bar-inner" id="confidence-bar"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 id="speed">0 ms</h2>
+        <span>Processing Time</span>
+      </div>
+
+      <div class="card">
+        <h2 id="fps">0</h2>
+        <span>FPS</span>
+      </div>
+
+      <div class="card">
+        <h2 id="power"> mW</h2>
+        <span>Power Consumption</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    socket.on("bottle_stats", data => {
+      document.getElementById("count").textContent = 0;
+      document.getElementById("fps").textContent = 0;
+      document.getElementById("speed").textContent = 0 + " ms";
+      document.getElementById("power").textContent =  + " mW";
+
+      document.getElementById("confidence-text").textContent = data.accuracy + "%";
+      document.getElementById("confidence-bar").style.width = data.accuracy + "%";
+    });
+  </script>
+</body>
+</html>
